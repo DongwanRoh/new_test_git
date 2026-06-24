@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>핸즈프리 요리 가이드 — Hands-free Chef</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- SVG 그라디언트 정의 정의용 숨겨진 SVG -->
+  <svg style="width:0; height:0; position:absolute;" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="header-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#10B981" />
+        <stop offset="100%" stop-color="#3B82F6" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="app-container">
+    
+    <!-- 공통 앱 헤더 -->
+    <header class="app-header">
+      <button id="back-btn" class="btn btn-icon-only" style="visibility: hidden;" aria-label="이전 화면으로 이동">
+        <!-- 뒤로가기 아이콘 (왼쪽 화살표) -->
+        <svg viewBox="0 0 24 24" class="svg-icon">
+          <path d="M20,11H7.83l5.59-5.59L12,4l-8,8l8,8l1.41-1.41L7.83,13H20V11Z"/>
+        </svg>
+      </button>
+      <h1 id="header-title">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+        </svg>
+        <span>핸즈프리 셰프</span>
+      </h1>
+      <div style="width: 46px;"></div> <!-- 정렬용 여백 -->
+    </header>
+
+    <!-- 1. 홈 / 레시피 탐색 화면 -->
+    <section id="home-screen" class="screen active">
+      <!-- 검색바 -->
+      <div class="search-container">
+        <svg viewBox="0 0 24 24" class="search-icon">
+          <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="레시피명 또는 재료 검색...">
+      </div>
+
+      <!-- 카테고리 필터 칩 -->
+      <div id="category-chips" class="category-container">
+        <span class="chip active" data-category="전체">전체</span>
+        <span class="chip" data-category="국찌개">국·찌개</span>
+        <span class="chip" data-category="반찬">밑반찬</span>
+        <span class="chip" data-category="한그릇">한그릇요리</span>
+        <span class="chip" data-category="구이볶음">구이·볶음</span>
+      </div>
+
+      <!-- 감성 태그 다중 필터 -->
+      <div class="mood-filter-section">
+        <div class="mood-title">
+          <svg viewBox="0 0 24 24" class="svg-icon" style="width:14px; height:14px; fill:var(--primary-color);">
+            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+          </svg>
+          오늘의 요리 감성 (다중 선택 가능)
+        </div>
+        <div id="mood-tags" class="mood-tags-grid">
+          <button class="mood-tag-btn" data-mood="매콤">🌶️ 매콤</button>
+          <button class="mood-tag-btn" data-mood="깔끔">🥬 깔끔</button>
+          <button class="mood-tag-btn" data-mood="칼칼">🔥 칼칼</button>
+          <button class="mood-tag-btn" data-mood="얼큰">🥣 얼큰</button>
+          <button class="mood-tag-btn" data-mood="짭짤">🧂 짭짤</button>
+          <button class="mood-tag-btn" data-mood="담백">🥚 담백</button>
+          <button class="mood-tag-btn" data-mood="달콤">🍎 달콤</button>
+          <button class="mood-tag-btn" data-mood="든든">🍖 든든</button>
+        </div>
+      </div>
+
+      <!-- 레시피 카드 목록 -->
+      <div id="recipes-list" class="recipes-grid">
+        <!-- 자바스크립트로 동적 렌더링 -->
+      </div>
+    </section>
+
+    <!-- 2. 레시피 상세 화면 -->
+    <section id="detail-screen" class="screen">
+      <div class="detail-header">
+        <h2 id="detail-recipe-title">레시피 상세</h2>
+      </div>
+
+      <!-- 상세 일러스트 히어로 영역 -->
+      <div class="recipe-detail-hero" id="detail-recipe-img">
+        <!-- SVG 일러스트 삽입 영역 -->
+      </div>
+
+      <!-- 메타 카드 그리드 -->
+      <div class="recipe-meta-grid">
+        <div class="meta-item">
+          <div class="meta-val" id="detail-meta-time">25분</div>
+          <div class="meta-lbl">소요 시간</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-val" id="detail-meta-difficulty">초급</div>
+          <div class="meta-lbl">난이도</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-val" id="detail-meta-servings">2인분</div>
+          <div class="meta-lbl">분량</div>
+        </div>
+      </div>
+
+      <!-- 재료 목록 헤더 -->
+      <div class="section-title">
+        필수 준비물 <span>탭하여 줄긋기 (체크 상태 저장됨)</span>
+      </div>
+
+      <!-- 재료 체크리스트 -->
+      <div class="ingredient-list" id="detail-ingredients-list">
+        <!-- 자바스크립트로 동적 렌더링 -->
+      </div>
+
+      <!-- 요리 시작 플로팅 바 -->
+      <div class="floating-action-bar">
+        <button id="start-cooking-btn" class="btn btn-primary btn-block">
+          <svg viewBox="0 0 24 24" class="svg-icon" style="fill:#0b0f19;">
+            <path d="M8,5.14V19.14L19,12.14L8,5.14Z"/>
+          </svg>
+          핸즈프리 요리 시작하기
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. 핸즈프리 요리 모드 화면 -->
+    <section id="cooking-screen" class="screen">
+      
+      <!-- 상단 정보 및 진행 상황 -->
+      <div class="cooking-header">
+        <h2 id="cooking-recipe-title" style="font-size:16px; font-weight:700;">돼지고기 김치찌개</h2>
+        <span id="cooking-step-progress" style="font-size:13px; font-weight:700; color:var(--text-muted);">2 / 5 단계</span>
+      </div>
+
+      <!-- 진행 바 -->
+      <div class="progress-bar-container">
+        <div id="cooking-progress-fill" class="progress-bar-fill"></div>
+      </div>
+
+      <!-- 화면 꺼짐 경고 (Wake Lock 미지원 브라우저 대응) -->
+      <div id="wakelock-alert" class="wakelock-banner hidden">
+        ⚠️ 브라우저가 화면 꺼짐 방지를 지원하지 않습니다. 폰의 화면 꺼짐 시간을 길게 설정해주세요!
+      </div>
+
+      <!-- 현재 진행 단계 큰 카드 -->
+      <div class="cooking-step-card">
+        <div class="cooking-step-num" id="cooking-step-label">STEP 1</div>
+        <div class="cooking-step-text" id="cooking-step-instruction">
+          냄비에 식용유를 두르고 돼지고기를 넣어 중불에서 2분간 볶아주세요.
+        </div>
+      </div>
+
+      <!-- 자동 감지 카운트다운 타이머 -->
+      <div id="cooking-timer-section" class="timer-section hidden">
+        <div class="timer-label">⏰ 자동 관리 타이머</div>
+        <div class="timer-display-row">
+          <div id="cooking-timer-time" class="timer-time">02:00</div>
+          <button id="timer-toggle-btn" class="timer-control-btn">일시정지</button>
+          <!-- 테스트 가속 모드 -->
+          <button id="timer-fast-btn" class="timer-control-btn" style="background:rgba(239, 68, 68, 0.1); border-color:rgba(239, 68, 68, 0.2); color:#FCA5A5;">▶▶ 가속</button>
+        </div>
+        <div class="timer-bar-bg">
+          <div id="cooking-timer-bar" class="timer-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- 제어 및 설정 판넬 -->
+      <div class="cooking-controls-panel">
+        <div class="panel-row">
+          <span class="panel-lbl">
+            <span id="voice-status-indicator" class="voice-status-dot"></span>
+            음성 명령 ("다음", "이전", "다시")
+          </span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="stt-toggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="panel-row">
+          <span class="panel-lbl">⏱️ 타이머 종료 후 자동 진행</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="auto-next-toggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="panel-row">
+          <span class="panel-lbl">🔊 안내 음성 속도</span>
+          <span style="display:flex; align-items:center; gap:6px;">
+            <input type="range" id="tts-speed-slider" class="speed-slider" min="0.7" max="1.5" step="0.1" value="1.0">
+            <span id="tts-speed-label" style="font-family:monospace; min-width:28px;">1.0x</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- STT 인식 피드백 바 -->
+      <div id="stt-log-bar" class="stt-log-bar">
+        음성 명령을 켜면 마이크 인식이 시작됩니다.
+      </div>
+
+      <!-- 거대한 이전/다시/다음 엘보우 컨트롤러 -->
+      <div class="elbow-controls">
+        <button id="cook-prev-btn" class="btn btn-elbow" aria-label="이전 단계">
+          <svg viewBox="0 0 24 24">
+            <path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/>
+          </svg>
+          이전 단계
+        </button>
+        <button id="cook-repeat-btn" class="btn btn-elbow" aria-label="음성 다시 듣기">
+          <svg viewBox="0 0 24 24">
+            <path d="M12,5V1L7,6L12,11V7A6,6 0 0,1 18,13A6,6 0 0,1 12,19A6,6 0 0,1 6,13H4A8,8 0 0,0 12,21A8,8 0 0,0 20,13A8,8 0 0,0 12,5Z"/>
+          </svg>
+          다시 읽기
+        </button>
+        <button id="cook-next-btn" class="btn btn-elbow btn-elbow-large" aria-label="다음 단계">
+          <svg viewBox="0 0 24 24">
+            <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/>
+          </svg>
+          다음 단계
+        </button>
+      </div>
+    </section>
+
+    <!-- 4. 요리 완료 화면 -->
+    <section id="complete-screen" class="screen">
+      <div class="complete-card">
+        <!-- 트로피 일러스트 SVG -->
+        <svg viewBox="0 0 100 100" class="trophy-svg">
+          <path d="M30,20 L30,45 C30,55 38,62 48,63 L48,78 L35,78 L35,85 L65,85 L65,78 L52,78 L52,63 C62,62 70,55 70,45 L70,20 L30,20 Z" fill="#FFC107" />
+          <path d="M30,28 L20,28 C15,28 15,38 20,38 L30,38 L30,28 Z" fill="#FFA000" />
+          <path d="M70,28 L80,28 C85,28 85,38 80,38 L70,38 L70,28 Z" fill="#FFA000" />
+          <!-- 반짝이 별 -->
+          <polygon points="50,5 52,12 59,12 53,16 55,23 50,18 45,23 47,16 41,12 48,12" fill="#FFF" />
+          <polygon points="20,10 21,14 25,14 22,16 23,20 20,17 17,20 18,16 15,14 19,14" fill="#FFD54F" />
+          <polygon points="80,12 81,16 85,16 82,18 83,22 80,19 77,22 78,18 75,16 79,16" fill="#FFD54F" />
+        </svg>
+
+        <h2 class="complete-title">요리 완성! 🎉</h2>
+        <p class="complete-desc" id="complete-recipe-message">돼지고기 김치찌개가 성공적으로 조리되었습니다.</p>
+
+        <!-- 다음에 만들 레시피 추천 -->
+        <div class="recommend-section">
+          <div class="recommend-title">🥣 이 요리는 어때요?</div>
+          <div class="recommend-cards" id="recommend-recipes-list">
+            <!-- 자바스크립트로 추천 카드 동적 주입 -->
+          </div>
+        </div>
+
+        <button id="complete-home-btn" class="btn btn-primary btn-block">
+          목록으로 돌아가기
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 비동기 로컬 실행을 보완하는 순차 스크립트 로드 (전역 변수로 연동) -->
+  <script src="js/recipes.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

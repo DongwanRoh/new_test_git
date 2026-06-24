@@ -1,0 +1,920 @@
+/* 폰트 정의 및 기본 CSS 리셋 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* HSL 컬러 시스템 */
+  --bg-primary: #0b0f19;
+  --bg-surface: rgba(22, 28, 45, 0.7);
+  --bg-surface-solid: #161c2d;
+  --bg-card: rgba(30, 41, 59, 0.45);
+  
+  --primary-color: #10B981; /* 에메랄드 그린 */
+  --primary-glow: rgba(16, 185, 129, 0.3);
+  --primary-hover: #059669;
+  
+  --accent-color: #F59E0B; /* 타이머 오렌지 */
+  --accent-glow: rgba(245, 158, 11, 0.3);
+  
+  --danger-color: #EF4444;
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(16, 185, 129, 0.5);
+
+  --font-sans: 'Outfit', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+  line-height: 1.5;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.07) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* 모바일 전용 래퍼 (최대 너비 540px로 제한하여 데스크톱에서도 모바일 시뮬레이터 형태로 아름답게 렌더링) */
+.app-container {
+  width: 100%;
+  max-width: 500px;
+  background-color: rgba(15, 23, 42, 0.85);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* 뷰/섹션 제어 */
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 스크롤바 미려하게 개선 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 공통 컴포넌트 */
+
+/* 터치 영역 48px 이상 보장 */
+button, select, input {
+  font-family: inherit;
+  touch-action: manipulation;
+}
+
+/* 글라스모피즘 버튼 */
+.btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.btn-icon-only {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* 헤더 영역 */
+header.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header.app-header h1 {
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+header.app-header h1 svg {
+  width: 22px;
+  height: 22px;
+  fill: url(#header-gradient);
+}
+
+/* 1. 홈 화면 스타일 */
+
+/* 검색 영역 */
+.search-container {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 16px 14px 46px;
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  color: var(--text-main);
+  font-size: 15px;
+  transition: var(--transition-smooth);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(30, 41, 59, 0.7);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  fill: var(--text-muted);
+  pointer-events: none;
+}
+
+/* 필터 카테고리 칩 */
+.category-container {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  scrollbar-width: none; /* Firefox */
+}
+.category-container::-webkit-scrollbar {
+  display: none; /* Safari, Chrome */
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.chip.active {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--primary-color);
+  border-color: rgba(16, 185, 129, 0.35);
+  font-weight: 600;
+}
+
+/* 감성 태그 컨테이너 */
+.mood-filter-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+
+.mood-title {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mood-tags-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mood-tag-btn {
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.mood-tag-btn:hover {
+  color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.mood-tag-btn.active {
+  background: var(--primary-color);
+  color: #0b0f19;
+  border-color: var(--primary-color);
+  font-weight: 700;
+  box-shadow: 0 4px 10px var(--primary-glow);
+}
+
+/* 레시피 카드 목록 */
+.recipes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  flex: 1;
+}
+
+.recipe-card {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.recipe-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(30, 41, 59, 0.6);
+}
+
+.recipe-card-img {
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  background: rgba(15, 23, 42, 0.3);
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipe-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.recipe-card-info {
+  flex: 1;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.recipe-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.recipe-card-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.recipe-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.recipe-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+.recipe-tag.mood {
+  background: rgba(59, 130, 246, 0.1);
+  color: #93C5FD;
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.recipe-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* 2. 레시피 상세 화면 */
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.detail-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.recipe-detail-hero {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recipe-detail-hero .recipe-svg {
+  width: 140px;
+  height: 140px;
+  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+}
+
+.recipe-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.meta-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 10px;
+  text-align: center;
+}
+
+.meta-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.meta-lbl {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 재료 리스트 */
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title span {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.ingredient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 90px; /* 요리시작 플로팅 버튼 여유공간 */
+}
+
+.ingredient-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(30, 41, 59, 0.35);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  user-select: none;
+  transition: var(--transition-smooth);
+}
+
+.ingredient-item.checked {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255,255,255,0.05);
+}
+
+.ingredient-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ingredient-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.ingredient-item.checked .ingredient-checkbox {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.ingredient-checkbox::after {
+  content: '';
+  width: 6px;
+  height: 10px;
+  border: solid #0b0f19;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.ingredient-item.checked .ingredient-checkbox::after {
+  opacity: 1;
+}
+
+.ingredient-name {
+  font-size: 14px;
+  color: var(--text-main);
+  transition: var(--transition-smooth);
+}
+
+.ingredient-item.checked .ingredient-name {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.ingredient-amount {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* 플로팅 하단 액션바 */
+.floating-action-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px 24px;
+  background: linear-gradient(to top, var(--bg-primary) 80%, transparent);
+  border-top: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+.btn-block {
+  width: 100%;
+  padding: 16px;
+  font-size: 17px;
+  border-radius: 16px;
+}
+
+/* 3. 핸즈프리 요리 모드 */
+.cooking-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* 진행 상태 표시 바 */
+.progress-bar-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary-color) 0%, #3B82F6 100%);
+  border-radius: 3px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 현재 요리 단계 카드 (한글자 한글자 크게 돋보이게) */
+.cooking-step-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 30px 24px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
+  min-height: 250px;
+}
+
+.cooking-step-num {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.cooking-step-text {
+  font-size: 23px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+/* 타이머 영역 */
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.timer-section.hidden {
+  display: none;
+}
+
+.timer-label {
+  font-size: 11px;
+  color: var(--accent-color);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.timer-display-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.timer-time {
+  font-size: 32px;
+  font-family: 'Outfit', monospace;
+  font-weight: 800;
+  color: var(--accent-color);
+}
+
+.timer-control-btn {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: var(--accent-color);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+}
+
+/* 타이머 프로그레스 라인 */
+.timer-bar-bg {
+  width: 100%;
+  max-width: 200px;
+  height: 3px;
+  background: rgba(245, 158, 11, 0.1);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.timer-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--accent-color);
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+/* 제어 판넬 (설정들) */
+.cooking-controls-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-lbl {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.voice-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4B5563;
+  display: inline-block;
+}
+
+.voice-status-dot.listening {
+  background: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.5; }
+}
+
+/* 슬라이더 / 스위치 디자인 */
+.speed-slider {
+  width: 80px;
+  height: 4px;
+  accent-color: var(--primary-color);
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(255,255,255,0.1);
+  transition: .4s;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* 거대 컨트롤 패드 (팔꿈치/손등 터치용) */
+.elbow-controls {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 12px;
+  margin-top: auto;
+  padding-bottom: 10px;
+}
+
+.btn-elbow {
+  height: 80px;
+  border-radius: 22px;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--text-muted);
+  border-color: rgba(255,255,255,0.06);
+}
+
+.btn-elbow svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  margin-bottom: 4px;
+}
+
+.btn-elbow-large {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.2);
+  color: var(--primary-color);
+}
+
+.btn-elbow-large:active {
+  background: rgba(16, 185, 129, 0.2);
+}
+
+/* STT 디버그 로그 및 상태 알림 */
+.stt-log-bar {
+  text-align: center;
+  font-size: 12px;
+  color: var(--primary-color);
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px dashed rgba(16, 185, 129, 0.2);
+  padding: 8px;
+  border-radius: 10px;
+  margin-top: 10px;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Wake Lock 알림 */
+.wakelock-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
+  font-size: 11px;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.wakelock-banner.hidden {
+  display: none;
+}
+
+/* 4. 완료 화면 */
+.complete-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 10px;
+}
+
+.trophy-svg {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 24px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.complete-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.complete-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.recommend-section {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.recommend-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.recommend-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 공통 아이콘 SVG들 */
+.svg-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  display: inline-block;
+  vertical-align: middle;
+}
